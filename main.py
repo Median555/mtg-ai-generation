@@ -119,7 +119,7 @@ timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 response = openai.Image.create(
 	prompt=f'modern magic the gathering card art depicting a {card["super type"]} {card["sub type"]} named "{card["name"]}", {card["image_desc"]}, digital art, art station, 4k render',
 	n=1,
-	size="256x256",
+	size="512x512",
 	response_format="b64_json"
 )
 
