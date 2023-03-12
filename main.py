@@ -123,8 +123,11 @@ response = openai.Image.create(
 	response_format="b64_json"
 )
 
+os.makedirs('./output/art', exist_ok=True)
+os.makedirs('./output/sets', exist_ok=True)
+
 # Save art separately
-with open(f'./output/{timestamp}-art.png', 'wb') as f:
+with open(f'./output/art/{timestamp}-art.png', 'wb') as f:
 	f.write(b64decode(response['data'][0]['b64_json']))
 
 # Write set file
@@ -132,14 +135,14 @@ buf = io.BytesIO()
 with zipfile.ZipFile(buf, 'x', zipfile.ZIP_DEFLATED) as f:
 	f.writestr('set', str(raw_set_file))
 	f.writestr('image1', b64decode(response['data'][0]['b64_json']))
-with open(f'./output/{timestamp}.mse-set', 'wb') as f:
+with open(f'./output/sets/{timestamp}.mse-set', 'wb') as f:
 	f.write(buf.getvalue())
 
 # Generate card from set file
-p = subprocess.Popen(f'mse.exe --cli --raw ../output/{timestamp}.mse-set',
+p = subprocess.Popen(f'mse.exe --cli --raw ../output/sets/{timestamp}.mse-set',
 	cwd="mse", shell=True,
 	stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-p.stdin.write(str.encode(f'write_image_file(set.cards.0, file: "../output/{card["name"]}.png")'))
+p.stdin.write(str.encode(f'write_image_file(set.cards.0, file: "../output/{timestamp}-{card["name"]}.png")'))
 p.stdin.write(str.encode(f'\nwrite_image_file(set.cards.0, file: "../newest-card.png")'))
 print(p.communicate(timeout=15)[0])
 p.stdin.close()
