@@ -146,8 +146,3 @@ p.stdin.write(str.encode(f'write_image_file(set.cards.0, file: "../output/{times
 p.stdin.write(str.encode(f'\nwrite_image_file(set.cards.0, file: "../newest-card.png")'))
 print(p.communicate(timeout=15)[0])
 p.stdin.close()
-
-
-
-# Clean up
-#os.remove('set.mse-set')
