@@ -5,6 +5,13 @@
 3. Install `openai` python package - [pip](https://pypi.org/project/openai/) - [conda](https://anaconda.org/conda-forge/openai)
 3. Run `main.py`
 
+## Stable diffusion backend
+
+1. Install a stable diffusion webUI - I used [AUTOMATIC1111's project](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+2. Add `--api` to the `COMMANDLINE_ARGS` line in `webui-user.bat` so it reads `set COMMANDLINE_ARGS=--api`
+3. Start the webui using the startup script
+4. Change the `render_card` backend parameter to `stablediffusion`
+
 # Notes
 
 1. Enchantments sometimes have effects with no trigger. 
