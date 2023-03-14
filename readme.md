@@ -1,7 +1,8 @@
 # Setup
 
 1. Download Magic Set Editor (Lite is fine) and put it in a folder named "mse" https://magicseteditor.boards.net/page/downloads
-2. Add your OpenAI API key as an environment variable named "OPENAI_API_KEY"
+2. Add your OpenAI API key as an environment variable named "OPENAI_API_KEY" - [guide](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety). Make sure the enviroment variable is available by restarting any open terminal sessions (including VS Code)
+3. Install `openai` python package - [pip](https://pypi.org/project/openai/) - [conda](https://anaconda.org/conda-forge/openai)
 3. Run `main.py`
 
 # Notes
