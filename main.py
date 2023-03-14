@@ -64,8 +64,7 @@ def get_card(response):
 	# Do some cleaun
 	# Coallesce
 	card['super type'] = ' '.join([t.capitalize() for t in card['types']])
-	card['sub type'] = ' '.join([t.capitalize()
-								for t in card.get('subtypes', '')])
+	card['sub type'] = ' '.join([t.capitalize() for t in card.get('subtypes', '')]) if card.get('subtypes','') else ''
 
 	# Format text
 	indent_prefix = '\n\t\t'
@@ -123,7 +122,7 @@ def generate_cards(theme, nums=1):
 	return thread
 
 
-def render_card(card):
+def render_card(card, backend):
 	raw_set_file = f'''mse_version: 2.0.2
 game: magic
 game_version: 2020-04-25
@@ -164,12 +163,27 @@ apprentice_code:
 
 	timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
-	response = openai.Image.create(
-		prompt=f'modern magic the gathering art depicting a {card["super type"]} {card["sub type"]} named "{card["name"]}", {card["image_desc"]}, digital art, art station, 4k render',
-		n=1,
-		size="512x512",
-		response_format="b64_json"
-	)
+	image_data = None
+	image_prompt = f'modern magic the gathering art depicting a {card["super type"]} {card["sub type"]} named "{card["name"]}", {card["image_desc"]}, digital art, art station, 4k render'
+
+	if(backend == 'dalle'):
+		response = openai.Image.create(
+			prompt=image_prompt,
+			n=1,
+			size="512x512",
+			response_format="b64_json"
+		)
+
+		image_data = response['data'][0]['b64_json']
+
+	elif(backend == 'stablediffusion'):
+		api_url = 'http://127.0.0.1:7860/sdapi/v1/txt2img'
+		payload = {'prompt': image_prompt, 'width': 512, 'height':512, 'steps': 50}
+		response = requests.post(url=api_url, json=payload).json()
+
+		image_data = response['images'][0]
+
+	assert image_data is not None
 
 	os.makedirs('./output/art', exist_ok=True)
 	os.makedirs('./output/sets', exist_ok=True)
@@ -177,13 +191,13 @@ apprentice_code:
 
 	# Save art separately
 	with open(f'./output/art/{timestamp}-art.png', 'wb') as f:
-		f.write(b64decode(response['data'][0]['b64_json']))
+		f.write(b64decode(image_data))
 
 	# Write set file
 	buf = io.BytesIO()
 	with zipfile.ZipFile(buf, 'x', zipfile.ZIP_DEFLATED) as f:
 		f.writestr('set', str(raw_set_file))
-		f.writestr('image1', b64decode(response['data'][0]['b64_json']))
+		f.writestr('image1', b64decode(image_data))
 	with open(f'./output/sets/{timestamp}.mse-set', 'wb') as f:
 		f.write(buf.getvalue())
 
@@ -305,7 +319,7 @@ def full_pipeline():
 	print(deck)
 	for card in deck:
 		if card['name'] in generated_cards:
-			rendered_path = render_card(generated_cards[card['name']])
+			rendered_path = render_card(generated_cards[card['name']], 'stablediffusion')
 			card['url'] = upload_image_to_imgur(rendered_path)
 		else:
 			card['url'] = card_image_search(card['name'])
