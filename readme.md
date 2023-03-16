@@ -8,9 +8,9 @@ Example outputs:
 
 |Theme prompt|Generated cards|
 | - | - |
-| Cheese | ![](Curdling%20Conjurer.png) ![](Cheese%20Monger.png) |
-| cow | ![](Moo-tant%20Herdmaster.png) ![](20230312150803.png) |
-| Shrek | ![](20230308211944.png) |
+| Cheese | ![](./examples/Curdling%20Conjurer.png) ![](./examples/Cheese%20Monger.png) |
+| cow | ![](./examples/Moo-tant%20Herdmaster.png) ![](./examples/20230312150803.png) |
+| Shrek | ![](./examples/20230308211944.png) |
 
 
 
