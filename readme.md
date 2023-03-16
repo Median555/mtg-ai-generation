@@ -40,9 +40,7 @@ It's possible to use stable diffusion instead of Dalle for art generation.
 # TODO
 
 1. Better checking of missing fields
-2. Deck generation
-3. Fetching of real cards
-4. Tabletop Simulator deck generation
+2. Better deck generation
 
 
 # LICENSE
