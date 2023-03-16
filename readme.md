@@ -1,3 +1,20 @@
+# What's this?
+
+A Frankensteins monster of a script, gluing different APIs and programs together. It's purpose? To generate completely new Magic: The Gathering cards from user prompts and make playable decks out of these. Does it work? Kinda. Is it fun? Definitely!
+
+The script uses OpenAI GPT Chat api to generate cards and Dalle or Stable Diffusion for "art". These a given to Magic Set Editor which renders them into bona fide magic cards. With another prompt to the Chat api, a deck is build which output a "playable" deck in Tabletop Simulators Save format.
+
+Example outputs:
+
+|Theme prompt|Generated cards|
+| - | - |
+| Cheese | ![](Curdling%20Conjurer.png) ![](Cheese%20Monger.png) |
+| cow | ![](Moo-tant%20Herdmaster.png) ![](20230312150803.png) |
+| Shrek | ![](20230308211944.png) |
+
+
+
+
 # Setup
 
 1. Download Magic Set Editor (Lite is fine) and put it in a folder named "mse" https://magicseteditor.boards.net/page/downloads
@@ -6,6 +23,10 @@
 3. Run `main.py`
 
 ## Stable diffusion backend
+
+It's possible to use stable diffusion instead of Dalle for art generation.
+
+### Setup
 
 1. Install a stable diffusion webUI - I used [AUTOMATIC1111's project](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
 2. Add `--api` to the `COMMANDLINE_ARGS` line in `webui-user.bat` so it reads `set COMMANDLINE_ARGS=--api`

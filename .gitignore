@@ -33,5 +33,5 @@ packages/
 
 mse/
 output/
-*.png
+newest-card.png
 *.json
